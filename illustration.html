@@ -9,6 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        };
+    </script>
     <style>
         /* Custom Styles for a more polished look */
         body {
@@ -219,6 +224,118 @@
             background-color: #111827;
             color: #d1d5db;
         }
+        
+        /* Enhanced Search Bar & Dropdown Styles */
+        /* Hide browser's default search cancel button so only our single custom clear button appears */
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            -webkit-appearance: none;
+            appearance: none;
+            display: none !important;
+        }
+        input[type="search"]::-ms-clear,
+        input[type="search"]::-ms-reveal {
+            display: none !important;
+            width: 0;
+            height: 0;
+        }
+
+        .search input,
+        #search-input,
+        #mobile-search-input {
+            color: #111111 !important;
+            -webkit-text-fill-color: #111111 !important;
+            background-color: transparent !important;
+        }
+        .search input::placeholder,
+        #search-input::placeholder,
+        #mobile-search-input::placeholder {
+            color: #6b7280 !important;
+            -webkit-text-fill-color: #6b7280 !important;
+            opacity: 1;
+        }
+        .search input:focus,
+        #search-input:focus,
+        #mobile-search-input:focus,
+        .search input:active,
+        .search-container:focus-within input,
+        .search:focus-within input {
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
+        }
+        .search input::selection,
+        #search-input::selection,
+        #mobile-search-input::selection {
+            background-color: #cbd5e1 !important;
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
+        }
+        .search-container:focus-within .search,
+        .search:focus-within {
+            border-color: #111111 !important;
+            box-shadow: 0 0 0 1px #111111 !important;
+            background-color: #ffffff !important;
+        }
+        .search-suggestions-box {
+            animation: fadeInDropdown 0.15s ease-out;
+        }
+        @keyframes fadeInDropdown {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dark mode overrides (only active when html has class="dark") */
+        html.dark .search,
+        .dark .search {
+            background-color: #374151;
+            border-color: #4b5563;
+        }
+        html.dark .search-container:focus-within .search,
+        .dark .search-container:focus-within .search,
+        html.dark .search:focus-within,
+        .dark .search:focus-within {
+            background-color: #1f2937 !important;
+            border-color: #9ca3af !important;
+            box-shadow: 0 0 0 1px #9ca3af !important;
+        }
+        html.dark .search input,
+        .dark .search input,
+        html.dark #search-input,
+        .dark #search-input,
+        html.dark #mobile-search-input,
+        .dark #mobile-search-input {
+            color: #f9fafb !important;
+            -webkit-text-fill-color: #f9fafb !important;
+        }
+        html.dark .search input:focus,
+        .dark .search input:focus,
+        html.dark #search-input:focus,
+        .dark #search-input:focus,
+        html.dark #mobile-search-input:focus,
+        .dark #mobile-search-input:focus {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+        html.dark .search input::placeholder,
+        .dark .search input::placeholder,
+        html.dark #search-input::placeholder,
+        .dark #search-input::placeholder {
+            color: #9ca3af !important;
+            -webkit-text-fill-color: #9ca3af !important;
+        }
+        html.dark .search input::selection,
+        .dark .search input::selection,
+        html.dark #search-input::selection,
+        .dark #search-input::selection {
+            background-color: #4b5563 !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .dark .sidebar {
             background-color: #1f2937;
         }
@@ -352,10 +469,35 @@
 
                 <!-- Desktop Header -->
                 <div class="header-inner container mx-auto px-4 hidden md:flex items-center h-20">
-                    <div class="search flex-grow flex items-center bg-gray-100 border border-gray-200 rounded-full px-4 py-2">
-                        <svg class="w-5 h-5 text-gray-400 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <input class="w-full bg-transparent focus:outline-none" type="search" placeholder="Search photos and illustrations" aria-label="Search" />
-                        <svg class="w-5 h-5 text-gray-400 ml-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    <div class="search-container flex-grow max-w-3xl relative">
+                        <div class="search flex items-center bg-gray-100 border border-gray-200 rounded-full px-4 py-2 transition-all duration-200">
+                            <svg class="w-5 h-5 text-gray-400 mr-3 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <input id="search-input" class="w-full bg-transparent focus:outline-none text-sm md:text-base text-black" type="search" placeholder="Search illustrations (e.g. 3D, wallpaper, flat, icon)..." aria-label="Search" autocomplete="off" />
+                            <button id="search-clear-btn" class="hidden text-gray-400 hover:text-gray-700 dark:hover:text-white p-1 rounded-full focus:outline-none transition-colors" title="Clear search" aria-label="Clear search">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                            <span class="search-shortcut hidden lg:inline-flex items-center text-xs text-gray-400 border border-gray-300 dark:border-gray-600 rounded px-1.5 py-0.5 ml-1 select-none font-mono" title="Press / to search">/</span>
+                        </div>
+
+                        <!-- Dropdown for Suggestions -->
+                        <div id="search-suggestions" class="search-suggestions-box hidden absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-4 z-50">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Popular Illustration Categories</div>
+                            </div>
+                            <div class="flex flex-wrap gap-2" id="trending-tags-container">
+                                <button type="button" class="suggestion-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 transition">3D</button>
+                                <button type="button" class="suggestion-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 transition">Wallpapers</button>
+                                <button type="button" class="suggestion-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 transition">Flat</button>
+                                <button type="button" class="suggestion-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 transition">Hand Drawn</button>
+                                <button type="button" class="suggestion-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 transition">Icons</button>
+                                <button type="button" class="suggestion-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 transition">Line Art</button>
+                                <button type="button" class="suggestion-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 transition">Patterns</button>
+                            </div>
+                        </div>
                     </div>
                     <nav class="nav ml-8" aria-label="Primary">
                         <ul class="nav-list flex items-center space-x-6">
@@ -379,6 +521,23 @@
                     </div>
                 </div>
             </header>
+            <!-- Search Results Status Banner -->
+            <div id="search-banner" class="hidden container mx-auto px-4 md:px-6 pt-4 pb-1">
+                <div class="flex items-center justify-between flex-wrap gap-2 py-2.5 px-4 bg-gray-100 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Showing results for:</span>
+                        <span id="search-query-display" class="font-semibold text-gray-900 dark:text-white"></span>
+                        <span id="search-count-badge" class="ml-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-black text-white dark:bg-white dark:text-black"></span>
+                    </div>
+                    <button id="reset-search-btn" class="text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white flex items-center space-x-1 py-1 px-2.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span>Clear search</span>
+                    </button>
+                </div>
+            </div>
+
 
             <main>
                 <section class="feed py-6" aria-label="Image feed">
@@ -706,6 +865,132 @@
             if (yearSpan) {
                 yearSpan.textContent = new Date().getFullYear();
             }
+
+            
+            // --- SEARCH LOGIC ---
+            const searchInput = document.getElementById('search-input');
+            const searchClearBtn = document.getElementById('search-clear-btn');
+            const searchSuggestions = document.getElementById('search-suggestions');
+            const searchBanner = document.getElementById('search-banner');
+            const searchQueryDisplay = document.getElementById('search-query-display');
+            const searchCountBadge = document.getElementById('search-count-badge');
+            const resetSearchBtn = document.getElementById('reset-search-btn');
+            let activeQuery = '';
+            let activeCategory = 'Featured';
+
+            const applyIllustrationFilters = () => {
+                const q = activeQuery.toLowerCase().trim();
+                const terms = q ? q.split(/\s+/).filter(Boolean) : [];
+
+                let result = activeCategory === 'Featured'
+                    ? illustrationData
+                    : illustrationData.filter(item => item.category === activeCategory);
+
+                if (terms.length > 0) {
+                    result = result.filter(item => {
+                        const alt = (item.alt || '').toLowerCase();
+                        const cat = (item.category || '').toLowerCase();
+                        const author = ((item.author && item.author.name) || '').toLowerCase();
+                        const combined = `${alt} ${cat} ${author}`;
+                        return terms.every(t => combined.includes(t));
+                    });
+
+                    if (searchBanner && searchQueryDisplay && searchCountBadge) {
+                        searchBanner.classList.remove('hidden');
+                        searchQueryDisplay.textContent = `"${activeQuery}"`;
+                        searchCountBadge.textContent = `${result.length} ${result.length === 1 ? 'illustration' : 'illustrations'}`;
+                    }
+                } else {
+                    if (searchBanner) searchBanner.classList.add('hidden');
+                }
+
+                if (searchClearBtn) searchClearBtn.classList.toggle('hidden', !q);
+
+                if (!masonryGrid) return;
+                if (result.length === 0) {
+                    const cleanQ = activeQuery.replace(/[&<>"']/g, '');
+                    masonryGrid.innerHTML = `
+                        <div style="column-span:all" class="text-center py-20 px-4 w-full">
+                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-black mb-1">No illustrations found ${cleanQ ? `for "${cleanQ}"` : ''}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">Looking for photos instead? <a href="index.html" class="underline text-black dark:text-white font-medium">Search the photo gallery</a></p>
+                            <div class="flex flex-wrap justify-center gap-2 max-w-md mx-auto">
+                                <button type="button" class="ill-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 transition">3D</button>
+                                <button type="button" class="ill-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 transition">Wallpapers</button>
+                                <button type="button" class="ill-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 transition">Flat</button>
+                                <button type="button" class="ill-chip px-3 py-1.5 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 transition">Hand Drawn</button>
+                            </div>
+                        </div>`;
+
+                    masonryGrid.querySelectorAll('.ill-chip').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            setSearchQuery(btn.textContent.trim());
+                        });
+                    });
+                } else {
+                    renderPhotos(result);
+                }
+            };
+
+            const setSearchQuery = (val) => {
+                activeQuery = val;
+                if (searchInput) searchInput.value = val;
+                if (searchSuggestions) searchSuggestions.classList.add('hidden');
+                applyIllustrationFilters();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // Debounce
+            const debounce = (fn, delay) => {
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => fn(...args), delay);
+                };
+            };
+
+            if (searchInput) {
+                searchInput.addEventListener('input', debounce((e) => {
+                    activeQuery = e.target.value.trim();
+                    applyIllustrationFilters();
+                }, 200));
+                searchInput.addEventListener('search', (e) => {
+                    if (!e.target.value) setSearchQuery('');
+                });
+                searchInput.addEventListener('focus', () => {
+                    if (searchSuggestions && !activeQuery) searchSuggestions.classList.remove('hidden');
+                });
+            }
+
+            if (searchClearBtn) {
+                searchClearBtn.addEventListener('click', () => setSearchQuery(''));
+            }
+            if (resetSearchBtn) {
+                resetSearchBtn.addEventListener('click', () => setSearchQuery(''));
+            }
+
+            document.querySelectorAll('.suggestion-chip').forEach(chip => {
+                chip.addEventListener('click', () => setSearchQuery(chip.textContent.trim()));
+            });
+
+            document.addEventListener('click', (e) => {
+                if (searchSuggestions && !e.target.closest('.search-container')) {
+                    searchSuggestions.classList.add('hidden');
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === '/' && document.activeElement !== searchInput) {
+                    e.preventDefault();
+                    if (searchInput) { searchInput.focus(); searchInput.select(); }
+                }
+                if (e.key === 'Escape') {
+                    if (searchSuggestions) searchSuggestions.classList.add('hidden');
+                    if (searchInput) searchInput.blur();
+                }
+            });
 
             // Initial render of all illustrations for the "Featured" tab on page load
             renderPhotos(illustrationData);
